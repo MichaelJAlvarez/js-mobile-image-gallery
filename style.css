@@ -1,0 +1,86 @@
+h1, h2 {
+  font-family: 'Inter var', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4299E1;
+  border: 0 solid #E2E8F0;
+  border-radius: .25rem;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 100%;
+  font-weight: 700;
+  line-height: 26px;
+  padding: .5rem 1rem;
+  text-align: center;
+}
+
+.slider-controls > button {
+  margin: .5rem;
+}
+
+.btn-circle {
+  border-radius: 50%;
+  display: flex;
+  width: 42px;
+  height: 42px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+#modal-backdrop {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5);
+  top:0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 270ms ease-in;
+}
+
+#modal-backdrop.show, .modal.show {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.modal {
+  background-color: #E2E8F0;
+  padding: 1rem 2rem;
+  min-width: 300px;
+  min-height: 300px;
+  border: 0 solid #E2E8F0;
+  border-radius: .25rem;
+  z-index: 20;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.thumbnail {
+  width: 120px;
+}
