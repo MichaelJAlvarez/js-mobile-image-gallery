@@ -1,7 +1,6 @@
 // Import stylesheets
 import './style.css';
 
-// Write Javascript code!
 let interaction;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -13,7 +12,7 @@ let startY;
 const imageGalleryOpener = document.querySelector('.open');
 const heroImage = document.querySelector('.hero-image');
 const modalBackdrop = document.getElementById('modal-backdrop');
-let clientWidth  = 672, clientHeight = 400;
+let clientWidth = 672, clientHeight = 400;
 let sourceImageWidth;
 let sourceImageHeight;
 
@@ -24,7 +23,7 @@ function toggleZoom() {
   if (zoom > 1) {
     zoom = 1;
   } else {
-    zoom += 0.5; // increase zoom by 20%
+    zoom += 0.5; // increase zoom
   }
 }
 
@@ -59,10 +58,6 @@ function addEventListeners() {
   // Open modal
   imageGalleryOpener.addEventListener('click', (event) => {
     modalBackdrop.classList.add('show');
-  })
-
-  canvas.addEventListener('click', (event) => {
-    
   })
 
   // Set initial clientX starting point to calculate distance moved later on..

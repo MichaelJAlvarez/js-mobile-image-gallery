@@ -47,14 +47,14 @@ button {
 }
 
 #modal-backdrop {
-  position: fixed;
+  position: fixed; 
   height: 100vh;
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.5);
   top:0;
   left: 0;
-  opacity: 0;
-  pointer-events: none;
+  opacity: 0; /* Hide until you add .show class */
+  pointer-events: none; /* Ignore clicks on hidden backdrop */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,7 +70,6 @@ button {
 .modal {
   background-color: #E2E8F0;
   padding: 1rem 2rem;
-
   border: 0 solid #E2E8F0;
   border-radius: .25rem;
   z-index: 20;
