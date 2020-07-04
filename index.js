@@ -2,14 +2,20 @@
 import './style.css';
 
 // Write Javascript code!
+let interaction;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-let zoom = 1;
+let zoom = 1.2;
 let currentX;
 let currentY;
+let startX;
+let startY;
 const imageGalleryOpener = document.querySelector('.open');
 const heroImage = document.querySelector('.hero-image');
 const modalBackdrop = document.getElementById('modal-backdrop');
+let clientWidth  = 672, clientHeight = 400;
+let sourceImageWidth;
+let sourceImageHeight;
 
 redrawCanvas();
 addEventListeners();
@@ -25,42 +31,63 @@ function toggleZoom() {
 function moveImage() {
 
 }
-// <img id="herothumb" class="hero-image" src="https://images.pexels.com/photos/2113566/pexels-photo-2113566.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="" width="400" height="238">
+
 /**
  * @param sx, sy - the top left corner of the canvas 
  */
 function redrawCanvas(sx, sy) {
   const image = new Image();
   image.src = 'https://images.pexels.com/photos/2113566/pexels-photo-2113566.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260';
-
+ 
   image.onload = (() => {
-    //  width: 2250px;
-    // height: 1500px;
-    const srcWidth = 2250;
-    const srcHeight = 1500;
-    const sWidth = srcWidth / (zoom * 2);
-    const sHeight = srcWidth / (zoom * 2);
-     ctx.drawImage(image, 0, 0, (srcWidth / zoom), (srcHeight  / zoom), 0, 0, 840, 500)
+    sourceImageWidth= image.width;
+    sourceImageHeight = image.height;
+    const sWidth = zoom > 1 ? sourceImageWidth / (zoom) : sourceImageWidth;
+    const sHeight = zoom > 1 ? sourceImageHeight / (zoom) : sourceImageHeight;
+    ctx.drawImage(image, 0, 0, sWidth, sHeight, 0, 0, clientWidth, clientHeight); 
+    clientWidth = canvas.clientWidth;
+    clientHeight = canvas.clientHeight;
   })
-  
 }
 
 function addEventListeners() {
+  // Close modal
   modalBackdrop.addEventListener('click', () => {
     modalBackdrop.classList.remove('show');
   })
 
-  imageGalleryOpener.addEventListener('click', () => {
-    toggleZoom();
+  // Open modal
+  imageGalleryOpener.addEventListener('click', (event) => {
     modalBackdrop.classList.add('show');
   })
 
-  heroImage.addEventListener('mouseover', (event) => {
-    currentX = event.offsetX;
-    currentY = event.offsetY;
+  canvas.addEventListener('click', (event) => {
+    
   })
 
-  heroImage.addEventListener('mousewheel', (event) => {
+  // Set initial clientX starting point to calculate distance moved later on..
+  canvas.addEventListener('mousedown', (event) => {
+    interaction = 'pan';
+    startX = event.clientX;
+    startY = event.clientY;
+  })
+
+  canvas.addEventListener('mouseup', (event) => {
+    interaction = undefined;
+  })
+
+  // Pan Image if zoomed in
+  canvas.addEventListener('mousemove', (event) => {
+    if (zoom <= 1 || interaction !== 'pan') { return; }
+    currentX = event.offsetX;
+    currentY = event.offsetY;
+    const mx = (currentX - startX);
+    const my = (currentY - startY);
+    console.log(`moved x: ${mx}, and moved y: ${my}`);
+  })
+
+  // Zoom
+  canvas.addEventListener('mousewheel', (event) => {
     
   })
 }
