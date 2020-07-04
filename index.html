@@ -3,15 +3,17 @@
 
 	<div class="d-flex">
 		<div class="open pointer" class="d-flex flex-column">
-			<img class="" src="https://images.pexels.com/photos/2113566/pexels-photo-2113566.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=120" alt='hero image'/>
+
+      <img id="herothumb" class="hero-image" src="https://images.pexels.com/photos/2113566/pexels-photo-2113566.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="" width="400" height="238">
 		</div>
 	</div>
 
 	<div id="modal-backdrop">
 		<div class="modal" onclick="event.stopPropagation()">
 			<h1>Image Gallery</h1>
-
-      	<img class="" src="https://images.pexels.com/photos/2113566/pexels-photo-2113566.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=300" alt='hero image'/>
+  
+        <canvas id="canvas" width="840" height="500">
+	
 
         <div class="slider-controls justify-content-center d-flex">
           <button class="btn-circle">

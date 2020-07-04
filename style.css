@@ -70,8 +70,7 @@ button {
 .modal {
   background-color: #E2E8F0;
   padding: 1rem 2rem;
-  min-width: 300px;
-  min-height: 300px;
+
   border: 0 solid #E2E8F0;
   border-radius: .25rem;
   z-index: 20;
