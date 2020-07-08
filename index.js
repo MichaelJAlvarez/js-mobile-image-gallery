@@ -5,10 +5,12 @@ let interaction;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let zoom = 1.2;
+let sx, sy;
+let image;
 let currentX;
 let currentY;
-let startX;
-let startY;
+let mouseStartX;
+let mouseStartY;
 const imageGalleryOpener = document.querySelector('.open');
 const heroImage = document.querySelector('.hero-image');
 const modalBackdrop = document.getElementById('modal-backdrop');
@@ -16,7 +18,7 @@ let clientWidth = 672, clientHeight = 400;
 let sourceImageWidth;
 let sourceImageHeight;
 
-redrawCanvas();
+loadImageOnCanvas();
 addEventListeners();
 
 function toggleZoom() { 
@@ -27,15 +29,11 @@ function toggleZoom() {
   }
 }
 
-function moveImage() {
-
-}
-
 /**
  * @param sx, sy - the top left corner of the canvas 
  */
-function redrawCanvas(sx, sy) {
-  const image = new Image();
+function loadImageOnCanvas(sx, sy) {
+  image = new Image();
   image.src = 'https://images.pexels.com/photos/2113566/pexels-photo-2113566.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260';
  
   image.onload = (() => {
@@ -43,11 +41,24 @@ function redrawCanvas(sx, sy) {
     sourceImageHeight = image.height;
     const sWidth = zoom > 1 ? sourceImageWidth / (zoom) : sourceImageWidth;
     const sHeight = zoom > 1 ? sourceImageHeight / (zoom) : sourceImageHeight;
+    sx = 0;
+    sy = 0;
     ctx.drawImage(image, 0, 0, sWidth, sHeight, 0, 0, clientWidth, clientHeight); 
     clientWidth = canvas.clientWidth;
     clientHeight = canvas.clientHeight;
   })
 }
+
+function drawCanvas(imageParam, sx, sy) {
+  const newZoomedInWidth = img.width / zoom;
+  const newZoomedInHeight = img.height / zoom;
+
+  // Take midpoint of visible image, and calculate new top left corner (new sx, sy values)
+  const newSx = beforeZoomMidpointX - (newZoomedInWidth / 2);
+  const newSy = beforeZoomMidpointY - (newZoomedInHeight / 2);
+  ctx.drawImage(imageParam, sx, sy )
+}
+
 
 function addEventListeners() {
   // Close modal
@@ -63,8 +74,8 @@ function addEventListeners() {
   // Set initial clientX starting point to calculate distance moved later on..
   canvas.addEventListener('mousedown', (event) => {
     interaction = 'pan';
-    startX = event.clientX;
-    startY = event.clientY;
+    mouseStartX = event.clientX;
+    mouseStartY = event.clientY;
   })
 
   canvas.addEventListener('mouseup', (event) => {
@@ -76,9 +87,15 @@ function addEventListeners() {
     if (zoom <= 1 || interaction !== 'pan') { return; }
     currentX = event.offsetX;
     currentY = event.offsetY;
-    const mx = (currentX - startX);
-    const my = (currentY - startY);
+    const mx = (currentX - mouseStartX);
+    const my = (currentY - mouseStartY);
+
+    sx = (sx + mx);
+    sy = (sy + my);
+    this.drawCanvas(image, sx, sy);
     console.log(`moved x: ${mx}, and moved y: ${my}`);
+    // 
+    
   })
 
   // Zoom
