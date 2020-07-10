@@ -5,10 +5,11 @@ let interaction;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let zoom = 1.2;
-let sx, sy;
+let sx = 0, sy = 0;
 let image;
 let currentX;
 let currentY;
+let midpointX;
 let mouseStartX;
 let mouseStartY;
 const imageGalleryOpener = document.querySelector('.open');
@@ -50,13 +51,10 @@ function loadImageOnCanvas(sx, sy) {
 }
 
 function drawCanvas(imageParam, sx, sy) {
-  const newZoomedInWidth = img.width / zoom;
-  const newZoomedInHeight = img.height / zoom;
-
-  // Take midpoint of visible image, and calculate new top left corner (new sx, sy values)
-  const newSx = beforeZoomMidpointX - (newZoomedInWidth / 2);
-  const newSy = beforeZoomMidpointY - (newZoomedInHeight / 2);
-  ctx.drawImage(imageParam, sx, sy )
+  const newZoomedInWidth = imageParam.width / zoom;
+  const newZoomedInHeight = imageParam.height / zoom;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(image, sx, sy, image.width / zoom, image.height / zoom, 0, 0, clientWidth, clientHeight);
 }
 
 
@@ -89,13 +87,13 @@ function addEventListeners() {
     currentY = event.offsetY;
     const mx = (currentX - mouseStartX);
     const my = (currentY - mouseStartY);
-
-    sx = (sx + mx);
-    sy = (sy + my);
-    this.drawCanvas(image, sx, sy);
-    console.log(`moved x: ${mx}, and moved y: ${my}`);
-    // 
-    
+;
+    // let midpx = sx + mx;
+    // sx = midpx + sx;
+    sx = sx + mx;
+     console.log(`sx: ${sx} moved x: ${mx}, and moved y: ${my}`);
+    drawCanvas(image, sx, sy);
+   
   })
 
   // Zoom
