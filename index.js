@@ -17,7 +17,7 @@ let currentY;
 let mouseStartX;
 let mouseStartY;
 
-let clientWidth = 672, clientHeight = 400;
+let canvasWidth = 672, canvasHeight = 400;
 let sourceImageWidth;
 let sourceImageHeight;
 
@@ -35,25 +35,20 @@ function loadImageOnCanvas(sx, sy) {
   image.src = 'https://images.pexels.com/photos/2113566/pexels-photo-2113566.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260';
  
   image.onload = (() => {
-    sourceImageWidth= image.width;
-    sourceImageHeight = image.height;
-    const sWidth = zoom > 1 ? sourceImageWidth / (zoom) : sourceImageWidth;
-    const sHeight = zoom > 1 ? sourceImageHeight / (zoom) : sourceImageHeight;
+    const sWidth = zoom > 1 ? image.width / (zoom) : image.width;
+    const sHeight = zoom > 1 ? image.height / (zoom) : redrawImage.height;
     sx = 0;
     sy = 0;
-    ctx.drawImage(image, 0, 0, sWidth, sHeight, 0, 0, clientWidth, clientHeight); 
-    clientWidth = canvas.clientWidth;
-    clientHeight = canvas.clientHeight;
+    ctx.drawImage(image, 0, 0, sWidth, sHeight, 0, 0, canvasWidth, canvasHeight); 
+    canvasWidth = canvas.clientWidth;
+    canvasHeight = canvas.clientHeight;
   })
 }
 
-function drawCanvas(imageParam, sx, sy) {
-  const newZoomedInWidth = imageParam.width / zoom;
-  const newZoomedInHeight = imageParam.height / zoom;
+function redrawImage(sx, sy) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(image, sx, sy, image.width / zoom, image.height / zoom, 0, 0, clientWidth, clientHeight);
+  ctx.drawImage(image, sx, sy, image.width / zoom, image.height / zoom, 0, 0, canvasWidth, canvasHeight);
 }
-
 
 function addEventListeners() {
   // Close modal
@@ -82,7 +77,7 @@ function addEventListeners() {
     sx = (sx + mx);
     sy = (sy + my);
   
-    drawCanvas(image, sx, sy);
+    redrawImage(sx, sy);
   })
 
   canvas.addEventListener('mouseup', (event) => {
