@@ -1,34 +1,31 @@
 // Import stylesheets
 import './style.css';
 
-let interaction;
+// Get DOM elements 
+const imageGalleryOpener = document.querySelector('.open');
+const heroImage = document.querySelector('.hero-image');
+const modalBackdrop = document.getElementById('modal-backdrop');
 const canvas = document.getElementById('canvas');
+
+let interaction;
 const ctx = canvas.getContext('2d');
 let zoom = 1.2;
 let sx = 0, sy = 0;
 let image;
 let currentX;
 let currentY;
-let midpointX;
 let mouseStartX;
 let mouseStartY;
-const imageGalleryOpener = document.querySelector('.open');
-const heroImage = document.querySelector('.hero-image');
-const modalBackdrop = document.getElementById('modal-backdrop');
+
 let clientWidth = 672, clientHeight = 400;
 let sourceImageWidth;
 let sourceImageHeight;
 
+
+// Load and draw image
 loadImageOnCanvas();
 addEventListeners();
 
-function toggleZoom() { 
-  if (zoom > 1) {
-    zoom = 1;
-  } else {
-    zoom += 0.5; // increase zoom
-  }
-}
 
 /**
  * @param sx, sy - the top left corner of the canvas 
@@ -76,29 +73,28 @@ function addEventListeners() {
     mouseStartY = event.clientY;
   })
 
-  canvas.addEventListener('mouseup', (event) => {
-    interaction = undefined;
-  })
-
   // Pan Image if zoomed in
   canvas.addEventListener('mousemove', (event) => {
     if (zoom <= 1 || interaction !== 'pan') { return; }
-    currentX = event.offsetX;
-    currentY = event.offsetY;
-    const mx = (currentX - mouseStartX);
-    const my = (currentY - mouseStartY);
-;
-    // let midpx = sx + mx;
-    // sx = midpx + sx;
-    sx = sx + mx;
-     console.log(`sx: ${sx} moved x: ${mx}, and moved y: ${my}`);
+    const mx = (event.clientX - mouseStartX);
+    const my = (event.clientY - mouseStartY);
+
+    sx = (sx + mx);
+    sy = (sy + my);
+  
     drawCanvas(image, sx, sy);
-   
   })
 
-  // Zoom
-  canvas.addEventListener('mousewheel', (event) => {
-    
+  canvas.addEventListener('mouseup', (event) => {
+    interaction = undefined;
   })
+}
+
+function toggleZoom() { 
+  if (zoom > 1) {
+    zoom = 1;
+  } else {
+    zoom += 0.5; // increase zoom
+  }
 }
 
