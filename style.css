@@ -30,6 +30,18 @@ button {
   height: 42px;
 }
 
+.modal__header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+}
+
+.close-icon-container {
+  max-width: 40px;
+  max-height: 40px;
+  color: whitesmoke;
+}
+
 .text-center {
   text-align: center;
 }
@@ -68,7 +80,8 @@ button {
 }
 
 .modal {
-  background-color: #E2E8F0;
+  background-color: transparent;
+  /* background-color: #E2E8F0; */
   padding: 1rem 2rem;
   border: 0 solid #E2E8F0;
   border-radius: .25rem;

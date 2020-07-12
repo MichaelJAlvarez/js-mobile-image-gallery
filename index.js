@@ -4,12 +4,15 @@ import './style.css';
 // Get DOM elements 
 const imageGalleryOpener = document.querySelector('.open');
 const heroImage = document.querySelector('.hero-image');
+
 const modalBackdrop = document.getElementById('modal-backdrop');
 const canvas = document.getElementById('canvas');
 
 let interaction;
 const ctx = canvas.getContext('2d');
 let zoom = 1.2;
+let maxZoom = 3.14;
+let minZoom = 1;
 let sx = 0, sy = 0;
 let image;
 let currentX;
@@ -71,11 +74,11 @@ function addEventListeners() {
   // Pan Image if zoomed in
   canvas.addEventListener('mousemove', (event) => {
     if (zoom <= 1 || interaction !== 'pan') { return; }
-    const mx = (event.clientX - mouseStartX);
-    const my = (event.clientY - mouseStartY);
+    const mx = (mouseStartX - event.clientX);
+    const my = (mouseStartY - event.clientY);
 
-    sx = (sx + mx);
-    sy = (sy + my);
+    sx = (sx + (mx / (zoom * zoom)));
+    sy = (sy + (my / (zoom * zoom)));
   
     redrawImage(sx, sy);
   })
@@ -83,7 +86,31 @@ function addEventListeners() {
   canvas.addEventListener('mouseup', (event) => {
     interaction = undefined;
   })
+
+  canvas.addEventListener('mousewheel', (event) => {
+    // Prevent zoom on rest of page
+    event.preventDefault();
+    event.stopPropagation();
+
+    const beforeZoomMidpointX = sx + (image.width / (zoom * 2));
+		const beforeZoomMidpointY = sy + (image.height / (zoom * 2));
+    zoom = zoom + (-event.deltaY / 22);
+
+    if (zoom > maxZoom) {
+      zoom = maxZoom;
+    }
+
+    if (zoom < minZoom) {
+      zoom = minZoom;
+    }
+
+    sx = beforeZoomMidpointX - (image.width / (zoom * 2));
+    sy = beforeZoomMidpointY -  (image.height / (zoom * 2));
+    redrawImage(sx, sy);
+  })
 }
+
+
 
 function toggleZoom() { 
   if (zoom > 1) {
